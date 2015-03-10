@@ -8,7 +8,7 @@ var data = new p5.Table(),
 	scl = 0.000001;
 
 function preload(){
-	data = loadTable("data/LOG00119.TXT", "csv");
+	data = loadTable("data/LOG00118.TXT", "csv");
 }
 
 function setup(){
@@ -17,7 +17,7 @@ function setup(){
 	frameRate(100000);
 	
 	numRows = data.getRowCount();
-	Pos = createVector(width/2,height/2,10),
+	Pos = createVector(width/2,height-100,10),
 	PrevPos = Pos,
 	Vel = createVector(0,0,0),
 	Accel = createVector(0,0,0);
@@ -30,11 +30,12 @@ function draw(){
 	//background(255);
 	//save previous position values before processing the next ones
 	PrevPos = Pos;
-
+	noStroke();
+	
 	processData(row);
 	
-	noStroke();
-	fill(132, 55, 78, 5);
+	
+	fill(132, 55, 78, 1);
 	ellipse(Pos.x, Pos.y, Pos.z, Pos.z);
 	//line(PrevPos.x, PrevPos.y, Pos.x, Pos.y);
 	
@@ -53,11 +54,13 @@ function draw(){
 function processData(row){
 	var xyz = data.getRow(row);
 	console.log("frameCount");
-	Accel.set(xyz.get(0), xyz.get(1), xyz.get(2));
+	Accel.set(xyz.get(1), xyz.get(2), xyz.get(0));
 	//scale acceleration to reasonable pixel values
 	Accel.mult(scl);
 	Vel.add(Accel);
 	Pos.add(Vel);
+	
+	
 }
 //returns a random choice between 0, 1, and 2
 var rN = function(){
